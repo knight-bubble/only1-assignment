@@ -8,9 +8,9 @@ export type UserContextProps = {
 
 const UserContext = createContext<UserContextProps>(undefined as unknown as UserContextProps);
 
-export function UserProvider({ children }: { children: ReactNode }) {
+export function UserProvider({ children, user }: { children: ReactNode; user: string }) {
   const value = {
-    user: "user2",
+    user: user,
   } satisfies UserContextProps;
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

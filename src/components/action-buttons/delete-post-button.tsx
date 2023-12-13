@@ -40,7 +40,7 @@ export default function DeletePostButton({ post }: { post: Post }) {
           <Button className='btn-outline' onPress={cancelDelete}>
             Cancel
           </Button>
-          <Button className='btn-danger' onPress={cancelDelete}>
+          <Button className='btn-danger' onPress={handleDelete}>
             Delete
           </Button>
         </div>

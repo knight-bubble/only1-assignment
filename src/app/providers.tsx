@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <UserProvider>
+    <UserProvider user='user2'>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider attribute='data-theme'>
           <ToastProvider>{children}</ToastProvider>
