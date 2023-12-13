@@ -8,5 +8,10 @@ const config: Config = {
   ],
   theme: {},
   plugins: [require("daisyui"), require("tailwind-scrollbar")({ nocompatible: true })],
+  daisyui: {
+    themes: false,
+    styled: true,
+    utils: true,
+  },
 };
 export default config;

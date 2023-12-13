@@ -4,4 +4,5 @@ export interface Post {
   images: string[];
   content: string;
   created: Date;
+  createdBy: string;
 }

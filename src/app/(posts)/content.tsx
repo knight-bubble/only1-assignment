@@ -1,6 +1,6 @@
 "use client";
 
-import PostsFeed from "@/components/posts-feed";
+import PostsFeed from "@/components/post/posts-feed";
 
 export default function FeedContentPage() {
   return <PostsFeed></PostsFeed>;
