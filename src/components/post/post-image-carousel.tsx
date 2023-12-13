@@ -1,37 +1,63 @@
-import useEmblaCarousel from "embla-carousel-react";
+"use client";
+
+import useEmblaCarousel, { EmblaCarouselType } from "embla-carousel-react";
 import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { twMerge } from "tailwind-merge";
 import Button from "../base/button";
 
 export default function PostImageCarousel({ images }: { images: string[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
+  const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
+    setPrevBtnDisabled(!emblaApi.canScrollPrev());
+    setNextBtnDisabled(!emblaApi.canScrollNext());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onSelect);
+    emblaApi.on("select", onSelect);
+  }, [emblaApi, onSelect]);
 
   return (
-    <div className='carousel relative  w-full' ref={emblaRef}>
-      <div className='flex'>
-        {images.map((image) => (
-          <div key={image} className='carousel-item'>
+    <div className='embla'>
+      <div className='embla__viewport' ref={emblaRef}>
+        <div className='embla__container'>
+          {images.map((image, idx) => (
             <Image
-              className='card-img-top w-full  object-cover'
+              key={idx}
+              priority={true}
               src={image}
-              width={500}
-              height={300}
+              width='0'
+              height='0'
+              sizes='100vw'
+              className='w-full h-auto embla__slide'
               alt={image}
-              loading='lazy'
             />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      {emblaApi?.canScrollPrev() && (
-        <Button className='glass absolute top-1/2 left-2 -translate-y-1/2' onPress={() => emblaApi.scrollPrev()}>
-          <MdArrowBackIos />
-        </Button>
-      )}
-      {emblaApi?.canScrollNext() && (
-        <Button className='glass absolute top-1/2 right-2 -translate-y-1/2' onPress={() => emblaApi.scrollNext()}>
-          <MdArrowForwardIos />
-        </Button>
-      )}
+      <Button
+        className={twMerge("glass absolute top-1/2 left-2 -translate-y-1/2", prevBtnDisabled && "btn-disabled")}
+        onPress={scrollPrev}
+      >
+        <MdArrowBackIos />
+      </Button>
+      <Button
+        className={twMerge("glass absolute top-1/2 right-2 -translate-y-1/2", nextBtnDisabled && "btn-disabled")}
+        onPress={scrollNext}
+      >
+        <MdArrowForwardIos />
+      </Button>
     </div>
   );
 }
