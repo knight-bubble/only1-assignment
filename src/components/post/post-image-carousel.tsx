@@ -30,8 +30,8 @@ export default function PostImageCarousel({ images }: { images: string[] }) {
 
   return (
     <div className='embla'>
-      <div className='embla__viewport' ref={emblaRef}>
-        <div className='embla__container'>
+      <div className='overflow-hidden' ref={emblaRef}>
+        <div className='backface-hidden flex -ml-4 touch-pan-y'>
           {images.map((image, idx) => (
             <Image
               key={idx}
@@ -39,8 +39,8 @@ export default function PostImageCarousel({ images }: { images: string[] }) {
               src={image}
               width='0'
               height='0'
-              sizes='100vw'
-              className='w-full h-auto embla__slide'
+              sizes='100vh'
+              className='w-full h-auto relative pl-4'
               alt={image}
             />
           ))}
